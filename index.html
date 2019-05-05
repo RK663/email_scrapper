@@ -51,21 +51,6 @@
 			  <input type="text" class="form-control from_site" id="inputEmail4" placeholder="instagram.com">
 			</div>
 
-			<div class="form-group col-md-10">
-			  <label>API key</label>
-		  		<div class="api_keys" style="margin-bottom: 10px;">
-				   <input type="radio" name="api_key" class="api_key key1" checked="" value="AIzaSyB3YioONiQOGuElPh30Z0bJtDeKv6xpFqc"> Key 1
-				   <input type="radio" name="api_key" class="api_key key2" style="margin-left: 8px;" value="AIzaSyBc99YNcENz-gzJVGFegUzQ3j4x4d4RqcY"> Key 2
-				   <input type="radio" name="api_key" class="api_key key3" style="margin-left: 8px;" value="AIzaSyDyeMvjFNLlNTETv4wBvcjsWjRz_qnkuZ8"> Key 3
-				   <input type="radio" name="api_key" class="api_key key4" style="margin-left: 8px;" value="AIzaSyAqlvSKrC5vBHdyaHL7LgqTF_Y639uPyTM"> Key 4
-				   <input type="radio" name="api_key" class="api_key key5" style="margin-left: 8px;" value="AIzaSyAe6BcV_w9LsOyQFIxckpC_azrbkqFBGw8"> Key 5
-				   <input type="radio" name="api_key" class="api_key custom" style="margin-left: 8px;" value="custom_api_key"> Custom
-				</div>
-
-			  <input type="text" class="form-control custom_api_key" id="inputEmail4" placeholder="custom search api key">
-			  <span class="description"><a href="https://developers.google.com/custom-search/v1/overview">Click here </a> to get google custom search api key. (create new project if previous project key limit finished) </span>
-			</div>
-
 			</div>
 			</div> <!-- card-body.// -->
 
@@ -142,15 +127,15 @@
 		jQuery(document).on("click", ".btn.btn-default.search", function(){
 			var search_text = jQuery('.search_text').val();
 			var limit = jQuery('.limit').val();
-			var custom_api_key = jQuery('.custom_api_key').val();
-			var api_key = jQuery('.api_keys [name="api_key"]').val();
+			/*var custom_api_key = jQuery('.custom_api_key').val();
+			var api_key = jQuery('.api_keys [name="api_key"]').val();*/
 			var site = jQuery('.from_site').val();
 
 			 var datas = {
 			  'search_text': search_text,
 			  'limit': limit,
-			  'api_key': api_key,
-			  'custom_api_key': custom_api_key,
+			  //'api_key': api_key,
+			  //'custom_api_key': custom_api_key,
 			  'site': site,
 			};
 			
@@ -169,10 +154,12 @@
 			    },
 			
 			    success: function(r){
+
+			    	console.log(r);
 					
 					jQuery('.loading_section').hide();
 
-			    	var patt = new RegExp("change api");
+			    	var patt = new RegExp("limit exeeded");
 					var res = patt.test(r);
 
 					if (res) {
@@ -180,19 +167,22 @@
 					} else {
 
 			    		jQuery('.preview_emails ul').html( jQuery('.preview_emails ul').html()+r);
+			    		jQuery('.preview_emails').slideDown(300);
+			    		jQuery('.download.btn').show();
 
-				    	if (limit > 100) {
+				    	/*if (limit > 100) {
 				    		auto_next_email_search(2);
 				    		jQuery('.active_domain').val(2);
 				    	} else {
 				    		jQuery('.download.btn').show();
 					    	jQuery('.preview_emails').fadeIn(300);
-				    	}
+				    	}*/
 
 					}
 
 			    }, error: function(){
 			    	alert('Something went wrong !');
+					jQuery('.loading_section').hide();
 			  }
 			});
 
